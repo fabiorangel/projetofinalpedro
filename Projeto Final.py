@@ -2,29 +2,6 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Lasso
 
-def sen(x):
-    return np.sin(x)
-def senU2(x):
-    return np.sin(x/2)
-def senU3(x):
-    return np.sin(x/3)
-def senU4(x):
-    return np.sin(x/4)
-def intercept(x):
-    return np.ones(len(x))
-
-def transform(x):
-    X = []
-    #hipoteses
-    X.append(x)
-    X.append(sen(x))
-    X.append(senU2(x))
-    X.append(senU3(x))
-    X.append(senU4(x))
-    X.append(intercept(x))
-
-    X = np.array(X)
-    return X.T
 
 f = open("BASE.csv")
 
@@ -42,27 +19,54 @@ for item in f:
 data = np.array(data)
 X = np.arange(len(y))
 
-X = transform(X)
 sc = StandardScaler()
 X = sc.fit_transform(X)
-X_train = X[:-12]
-X_test = X[-12:]
-y_train = data[1][:-12]
-y_test = data[1][-12:]
 
-reg = Lasso()
-reg.fit(X_train, y_train)
-y_pred = reg.predict(X_test)
 
 class CounterRadarRegressor:
     def __init__(self, binlist):
-        pass
+        self.binlist = binlist
+        self.reg = Lasso()
 
     def fit(x,y):
-        pass
+        X = self.transform(x)
+        self.reg.fit(X_train, y_train)
+
     def predict(x):
-        pass
-#        return y
+        X_train = X[:-12]
+        X_test = X[-12:]
+        y_train = data[1][:-12]
+        y_test = data[1][-12:]
+        y_pred = self.reg.predict(X_test)
+        return y_test, y_pred
+    def sen(x):
+        return np.sin(x)
+    def senU2(x):
+        return np.sin(x/2)
+    def senU3(x):
+        return np.sin(x/3)
+    def senU4(x):
+        return np.sin(x/4)
+    def intercept(x):
+        return np.ones(len(x))
+
+    def transform(x):
+        X = []
+        if self.binlist[0] == 1:
+            X.append(x)
+        if self.binlist[1] == 1:
+            X.append(sen(x))
+        if self.binlist[2] == 1:
+            X.append(senU2(x))
+        if self.binlist[3] == 1:
+            X.append(senU3(x))
+        if self.binlist[4] == 1:
+            X.append(senU4(x))
+        if self.binlist[5] == 1:
+            X.append(intercept(x))
+
+        X = np.array(X)
+        return X.T
 
 for i in xrange(len(y_pred)):
     print y_pred[i], y_test[i]
