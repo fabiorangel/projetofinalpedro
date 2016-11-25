@@ -68,5 +68,6 @@ class CounterRadarRegressor:
         X = np.array(X)
         return X.T
 
+    
 for i in xrange(len(y_pred)):
     print y_pred[i], y_test[i]
