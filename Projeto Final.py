@@ -30,15 +30,12 @@ class CounterRadarRegressor:
 
     def fit(x,y):
         X = self.transform(x)
-        self.reg.fit(X_train, y_train)
+        self.reg.fit(x, y)
 
     def predict(x):
-        X_train = X[:-12]
-        X_test = X[-12:]
-        y_train = data[1][:-12]
-        y_test = data[1][-12:]
-        y_pred = self.reg.predict(X_test)
-        return y_test, y_pred
+        X = self.transform(x)
+        return self.reg.predict(x)
+    
     def sen(x):
         return np.sin(x)
     def senU2(x):
@@ -55,19 +52,16 @@ class CounterRadarRegressor:
         if self.binlist[0] == 1:
             X.append(x)
         if self.binlist[1] == 1:
-            X.append(sen(x))
+            X.append(self.sen(x))
         if self.binlist[2] == 1:
-            X.append(senU2(x))
+            X.append(self.senU2(x))
         if self.binlist[3] == 1:
-            X.append(senU3(x))
+            X.append(self.senU3(x))
         if self.binlist[4] == 1:
-            X.append(senU4(x))
+            X.append(self.senU4(x))
         if self.binlist[5] == 1:
-            X.append(intercept(x))
+            X.append(self.intercept(x))
 
         X = np.array(X)
         return X.T
 
-    
-for i in xrange(len(y_pred)):
-    print y_pred[i], y_test[i]
