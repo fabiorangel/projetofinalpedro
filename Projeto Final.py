@@ -3,26 +3,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Lasso
 
 
-f = open("BASE.csv")
-
-header = f.readline()
-data = []
-
-for item in f:
-    item = item.split(',')[17:]
-    y = []
-    for i in xrange(len(item)):
-        item[i] = float(item[i])
-        y.append(item[i])
-    data.append(y)
-
-data = np.array(data)
-X = np.arange(len(y))
-
-sc = StandardScaler()
-X = sc.fit_transform(X)
-
-
 class CounterRadarRegressor:
     def __init__(self, binlist):
         self.binlist = binlist
@@ -30,7 +10,7 @@ class CounterRadarRegressor:
 
     def fit(x,y):
         X = self.transform(x)
-        self.reg.fit(x, y)
+        return self.reg.fit(x, y)
 
     def predict(x):
         X = self.transform(x)
@@ -65,3 +45,23 @@ class CounterRadarRegressor:
         X = np.array(X)
         return X.T
 
+
+f = open("BASE.csv")
+
+header = f.readline()
+data = []
+
+for item in f:
+    item = item.split(',')[17:]
+    y = []
+    for i in xrange(len(item)):
+        item[i] = float(item[i])
+        y.append(item[i])
+    data.append(y)
+
+regressao = CounterRadarRegressor([1,1,1,1,1,1])
+data = np.array(data)
+X = np.arange(len(y))
+
+sc = StandardScaler()
+X = sc.fit_transform(X)
